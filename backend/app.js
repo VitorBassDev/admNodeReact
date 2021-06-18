@@ -4,7 +4,7 @@ require('dotenv/config')
 app.use(express.json())
 const jwt = require('jsonwebtoken')
 const cors = require('cors')
-const { eAdmin } = require('./middlewares/auth')
+const { eAdmin } = require('./middlewares/auth') 
 
 
 app.use((req, res, next) =>{
@@ -16,6 +16,7 @@ app.use((req, res, next) =>{
               
 })
 
+const db = require('../backend/database/models/db.js')
 app.get('/usuarios', eAdmin, (req, res) => {
   return res.json({    
     erro: false,
