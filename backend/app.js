@@ -16,7 +16,6 @@ app.use((req, res, next) =>{
               
 })
 
-const db = require('../backend/database/models/db.js')
 app.get('/usuarios', eAdmin, (req, res) => {
   return res.json({    
     erro: false,
