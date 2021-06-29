@@ -3,6 +3,7 @@ const app = express()
 require('dotenv/config')
 app.use(express.json())
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
 const cors = require('cors')
 const { eAdmin } = require('./middlewares/auth') 
 const Usuario = require('./database/models/Usuario')
@@ -26,6 +27,7 @@ app.get('/usuarios', eAdmin, (req, res) => {
 
 app.post('/usuario', async (req, res) => {
   var dados = req.body
+  dados.password =  await bcrypt.hash(dados.password, 8)
 
   await Usuario.create(dados).then(function(){
     return res.json({       
