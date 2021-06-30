@@ -1,11 +1,18 @@
 import React, { useState } from 'react'
+import api from './../../services/config/api'
 
-function Login() {
+// export const Login = () => {
+  function Login(){
 
   const [dadosUsuario, setUsuario] = useState({
     email: '',
     password: ''
   })
+
+  const [status, setStatus] = useState({
+    type: '',
+    message: ''
+});
 
   const valorInput = e => setUsuario({...dadosUsuario, [e.target.name]: e.target.value}) 
 
@@ -14,11 +21,44 @@ function Login() {
     e.preventDefault()
     console.log(dadosUsuario.email)
     console.log(dadosUsuario.password)
+
+    const headers = {
+      'Content-Type': 'application/json'
+    }
+
+    // CONSUMIR A API E RETORNAR AS INFORMAÇÕES DE RETORNO DA ROTA
+    api.post('login', dadosUsuario, {headers})
+    .then((response) => {
+      console.log(response.data.erro)
+      console.log(response.data.message)
+      console.log(response.data.token)
+
+      if (response.data.erro) {
+        setStatus({
+            type: 'erro',
+            message: response.data.message
+        });
+      } else {
+          setStatus({
+              type: 'success',
+              message: response.data.message
+          })
+      }
+
+    }).catch(() => {
+      setStatus({
+        type: 'erro',
+        message: "Erro: Usuario ou Senha incorreto !!"
+      })
+    })
   }
 
   return (
     <div>
       <h1>LOGIN</h1>
+
+      {status.type === 'erro'? <p>{status.message}</p> : ""}
+      {status.type === 'success'? <p>{status.message}</p> : ""}
 
       <form onSubmit={loginSubmit}>
 
