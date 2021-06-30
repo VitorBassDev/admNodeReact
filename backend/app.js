@@ -68,6 +68,25 @@ app.post('/usuario', async (req, res) => {
 
 })
 
+app.put('/usuario', eAdmin, async (req, res) =>{
+  
+  var dados = req.body
+  dados.password =  await bcrypt.hash(dados.password, 8)
+
+  await Usuario.update(dados, {where: {id: dados.id}}).
+    then(function(){
+      return res.json({    
+        erro: false,
+        message: "Usuário Atualizado com Sucesso!"
+      }).catch(function(){
+        return res.json({    
+          erro: true,
+          message: "Erro ao Editar usuario!"
+        })
+      })
+  })
+})
+
 app.post('/login', async (req, res) => {
 
   const usuario = await Usuario.findOne({where: { email: req.body.email}})
