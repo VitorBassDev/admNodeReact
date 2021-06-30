@@ -1,11 +1,16 @@
 import React from 'react'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+
+import Login from './pages/Login'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p> Projeto Sis Adm - React|Node</p>
-      </header>
+    <div>
+      <Router>
+        <Switch>
+          <Route path="/" component={Login}/>
+        </Switch>
+      </Router>
     </div>
   );
 }
