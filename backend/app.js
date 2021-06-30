@@ -18,11 +18,19 @@ app.use((req, res, next) =>{
               
 })
 
-app.get('/usuarios', eAdmin, (req, res) => {
-  return res.json({    
-    erro: false,
-    message: "Listar Usuários"
-  })  
+app.get('/usuarios', eAdmin, async (req, res) => {
+  await Usuario.findAll({order: [['id', 'DESC']]}).then(function(usuarios){
+    return res.json({    
+      erro: false,
+      message: "Usuarios Encontrados",
+      usuarios
+    })  
+  }).catch(function(){
+    return res.json({    
+      erro: true,
+      message: "Nenhum Usuário encontrado"
+    })  
+  })
 })
 
 app.post('/usuario', async (req, res) => {
