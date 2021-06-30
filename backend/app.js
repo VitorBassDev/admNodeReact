@@ -33,6 +33,23 @@ app.get('/usuarios', eAdmin, async (req, res) => {
   })
 })
 
+app.get('/usuario/:id', eAdmin, async (req, res) =>{
+  // BUSCA O USUÁRIO PELA CHAVE PRIMÁRIA PASSADA POR PARAMETRO PELA URL 
+  await Usuario.findByPk(req.params.id).
+  then(usuario => {
+    return res.json({    
+      erro: false,
+      usuario
+    })
+  }).catch(function() {
+    return res.json({    
+      erro: true,
+      message: "Nenhum Usuário encontrado"
+    })
+  })
+
+})
+
 app.post('/usuario', async (req, res) => {
   var dados = req.body
   dados.password =  await bcrypt.hash(dados.password, 8)
@@ -50,21 +67,6 @@ app.post('/usuario', async (req, res) => {
   }) 
 
 })
-
-// app.get('/listaUser', async(req, res ) =>{
-//   await Usuario.findAll().then(function(){
-//     return res.json({    
-//       erro: false,
-//       message: "Lista de Usuários"
-//     })
-//   }).catch((err), function(){
-//     console.log(err)
-//     return res.json({    
-//       erro: true,
-//       message: "Error ao Buscar Listas!"
-//     })
-//   }) 
-// })
 
 app.post('/login', async (req, res) => {
 
