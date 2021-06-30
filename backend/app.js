@@ -58,28 +58,35 @@ app.post('/usuario', async (req, res) => {
 //   }) 
 // })
 
-// app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
 
-//   if(req.body.usuario === 'vitor@teste.com' && req.body.senha === '123456'){
+  const usuario = await Usuario.findOne({where: { email: req.body.email}})
 
-//     const {id} = 1
-//     var privateKey = process.env.SECRET
-//     var token = jwt.sign({id}, privateKey,{
-//       expiresIn: '3d' //10min
-//     })   
+  if(usuario === null){
+    return res.json({
+      erro: true,
+      message: "Usuário ou Senha Incorreta",
+    })  
+  }
 
-//     return res.json({
-//       erro: false,
-//       message: "Login Válido",
-//       dados: req.body,
-//       token
-//     }) 
-//   }
-//   return res.json({
-//     erro: true,
-//     message: "Login Inválido",
-//   })  
-// })
+  if(!(await bcrypt.compare(req.body.password, usuario.password))){
+    return res.json({
+      erro: true,
+      message: "Usuário ou Senha Incorreta",
+    })  
+  }
+
+    // GERAR O TOKEN DO USUÁRIO
+    var token = jwt.sign({id: usuario.id}, process.env.SECRET,{
+      expiresIn: '3d' //10min
+    })   
+
+    return res.json({
+      erro: false,
+      message: "Login Realizado com sucesso",
+      token
+    }) 
+})
 
 app.listen(process.env.BACKEND_PORT, () =>{
   console.log(`Server is Run on PORT`, process.env.BACKEND_PORT)
