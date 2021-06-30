@@ -87,6 +87,21 @@ app.put('/usuario', eAdmin, async (req, res) =>{
   })
 })
 
+app.delete('/usuario/:id', eAdmin, async(req, res) =>{
+  
+  await Usuario.destroy({where: {id: req.params.id}}).then(function(){
+    return res.json({       
+      erro: false,
+      message: "Usuário Excluído com Sucesso!"
+    })
+  }).catch(function(){
+    return res.json({    
+      erro: true,
+      message: "Erro ao Excluir usuário"
+    })
+  }) 
+})
+
 app.post('/login', async (req, res) => {
 
   const usuario = await Usuario.findOne({where: { email: req.body.email}})
