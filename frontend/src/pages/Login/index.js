@@ -1,9 +1,12 @@
 import React, { useState, useContext} from 'react'
+import { useHistory } from 'react-router-dom'
 import {Context} from '../../Context/AuthContext'
 import api from './../../services/config/api'
 
 // export const Login = () => {
   function Login(){
+
+  const history = useHistory()
 
   const {authenticated} = useContext(Context)
 
@@ -48,6 +51,7 @@ import api from './../../services/config/api'
           })
           localStorage.setItem('token', JSON.stringify(response.data.token))
           api.defaults.headers.Authorization = `Bearer ${response.data.token}`
+          return history.push('/dashboard')
       }
 
     }).catch(() => {
