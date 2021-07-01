@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext} from 'react'
+import {Context} from '../../Context/AuthContext'
 import api from './../../services/config/api'
 
 // export const Login = () => {
   function Login(){
+
+  const {authenticated} = useContext(Context)
 
   const [dadosUsuario, setUsuario] = useState({
     email: '',
@@ -43,6 +46,7 @@ import api from './../../services/config/api'
               type: 'success',
               message: response.data.message
           })
+          localStorage.setItem('token', JSON.stringify(response.data.token))
       }
 
     }).catch(() => {
