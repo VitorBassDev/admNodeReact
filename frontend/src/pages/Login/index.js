@@ -47,6 +47,7 @@ import api from './../../services/config/api'
               message: response.data.message
           })
           localStorage.setItem('token', JSON.stringify(response.data.token))
+          api.defaults.headers.Authorization = `Bearer ${response.data.token}`
       }
 
     }).catch(() => {
