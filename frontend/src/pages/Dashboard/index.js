@@ -1,16 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
-import { Context } from '../../Context/AuthContext';
+import Menu from '../../components/Menu';
+import { Container, ConteudoTitulo, Titulo } from '../../styles/custom_adm';
 
 export const Dashboard = () => {
-
-  const { handleLogout } = useContext(Context);
-
-  return (
-    <div>
-      <h1>Dashboard</h1>
-         
-        <button type="button" onClick={handleLogout}>Sair</button>
-      </div>
+    return (
+        <Container>
+            <Menu />
+            <ConteudoTitulo>
+                <Titulo>Dashboard</Titulo>
+            </ConteudoTitulo>            
+        </Container>
     );
 }
