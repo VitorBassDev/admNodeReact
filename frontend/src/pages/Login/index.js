@@ -1,5 +1,6 @@
 import React, { useState, useContext} from 'react'
 import { useHistory } from 'react-router-dom'
+import { Container, FormLogin, Titulo, Input, ButtomPrimary, AlertDanger, AlertSuccess } from './styles';
 import {Context} from '../../Context/AuthContext'
 import api from './../../services/config/api'
 
@@ -8,7 +9,7 @@ import api from './../../services/config/api'
 
   const history = useHistory()
 
-  const {authenticated} = useContext(Context)
+  const { signIn } = useContext(Context);
 
   const [dadosUsuario, setUsuario] = useState({
     email: '',
@@ -25,9 +26,7 @@ import api from './../../services/config/api'
 
   const loginSubmit = async e =>{
     e.preventDefault()
-    console.log(dadosUsuario.email)
-    console.log(dadosUsuario.password)
-
+    
     const headers = {
       'Content-Type': 'application/json'
     }
@@ -51,6 +50,7 @@ import api from './../../services/config/api'
           })
           localStorage.setItem('token', JSON.stringify(response.data.token))
           api.defaults.headers.Authorization = `Bearer ${response.data.token}`
+          signIn(true);
           return history.push('/dashboard')
       }
 
@@ -63,37 +63,34 @@ import api from './../../services/config/api'
   }
 
   return (
-    <div>
-      <h1>LOGIN</h1>
-
-      {status.type === 'erro'? <p>{status.message}</p> : ""}
-      {status.type === 'success'? <p>{status.message}</p> : ""}
+    <Container>
+      <FormLogin>
+        { /* Titulo da página */}
+        <Titulo>Login</Titulo>
+      {status.type === 'erro'? <AlertDanger>{status.message}</AlertDanger> : ""}
+      {status.type === 'success'? <AlertSuccess>{status.message}</AlertSuccess> : ""}
 
       <form onSubmit={loginSubmit}>
 
-        <label> Email:</label>
-          <input 
+          <Input 
             type="text" 
             name="email" 
             placeholder="Digite o Email" 
             onChange={valorInput}
           />
-        
-        <br/>
 
-        <label> Senha:</label>
-          <input 
+          <Input 
             type="password"
             name="password"
             placeholder="Digite a senha"
             onChange={valorInput}
           />
-        <br/>
+        
 
-        <button type="submit"> Enviar Dados</button>
-
-      </form>
-    </div>
+        <ButtomPrimary type="submit"> Enviar Dados</ButtomPrimary>
+        </form>
+        </FormLogin>
+      </Container>
   );
 }
 
